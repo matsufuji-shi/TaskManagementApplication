@@ -23,14 +23,16 @@ function App() {
 
     return (
         <div className="App">
-            <input type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} /><br />
-            <input type="text" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} /><br />
-            <button onClick={addUser}>Add User</button>
+            <div className="textBox">
+                <input type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} /><br />
+                <input type="text" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} /><br />
+                <button onClick={addUser}>Add User</button>
+            </div>
             <ul>
                 {categoryList.map((val, index) => (
                     <li key={index}>
-                      名前:{val.name}<br />
-                      email:{val.email}
+                        <span>名前:</span>{val.name}<br />
+                        <span>email:</span>{val.email}
                     </li>
                 ))}
             </ul>
