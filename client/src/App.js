@@ -37,8 +37,12 @@ function App() {
             <ul>
                 {categoryList.map((val, index) => (
                     <li key={index}>
-                        <span>名前:</span>{val.name}<br />
-                        <span>email:</span>{val.email}
+                        <div class="user-info">
+                            <span>名前:</span><span>{val.name}</span>
+                        </div>
+                        <div class="user-info">
+                            <span>email:</span><span>{val.email}</span>
+                        </div>
                     </li>
                 ))}
             </ul>
