@@ -11,7 +11,10 @@ function TaskList() {
         <Link to="/task/2">スキルシート作成</Link>
         <br />
         <Link to="/task/3">研修担当会議</Link>
+        <br />
+        <Link to="/add-task">新しいタスクを追加</Link>
     </div>
+    
   );
 }
 
