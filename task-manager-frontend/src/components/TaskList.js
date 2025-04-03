@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getTasks } from "../services/taskService";
-import { Link } from "react-router-dom"; // ← 追加
+import { Link } from "react-router-dom"; 
 
 const TaskList = () => {
     const [tasks, setTasks] = useState([]);
@@ -10,6 +10,7 @@ const TaskList = () => {
             try {
                 const data = await getTasks();
                 setTasks(data);
+                //taskService.jsからリストを受け取りdataへ入れる
             } catch (error) {
                 console.error("Failed to fetch tasks", error);
             }
