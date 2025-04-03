@@ -1,7 +1,7 @@
 //useCategories.js
 
 import { useState, useEffect } from 'react';
-import apiService from '../services/apiService';
+import apiService from '../services/taskService';
 
 const useCategories = () => {
     const [categoryList, setCategoryList] = useState([]);
