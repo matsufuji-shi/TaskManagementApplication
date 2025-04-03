@@ -1,4 +1,4 @@
-const db = require("../db/connection");
+const db = require("../config/datebase");
 
 // 全ユーザーを取得する
 const getUsers = (req, res) => {
