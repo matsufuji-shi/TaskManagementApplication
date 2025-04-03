@@ -1,9 +1,9 @@
 import React from "react";
 import './App.css';
-import useCategories from "./hooks/useCategories";
-import UserForm from "./components/UserForm";
-import UserList from "./components/UserList";
-import apiService from "./services/apiService";
+import useCategories from "./pages/TaskPage";
+import UserForm from "./components/TackForm";
+import UserList from "./components/TackList";
+import apiService from "./services/taskService";
 
 function App() {
     const { categoryList, refreshCategories } = useCategories();
