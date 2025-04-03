@@ -21,8 +21,6 @@ db.getConnection((err, connection) => {
     }
 });
 
-// ユーザー関連のAPIルートを使用
-app.use("/api", userRoutes);
 
 // タスク管理用のAPIルートを追加
 app.use("/api/tasks", tasksRouter);
