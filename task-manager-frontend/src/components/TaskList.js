@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getTasks } from "../services/taskService";
-import { Link } from "react-router-dom"; // ← 追加
+import TaskForm from "./TaskForm";
+import { Link } from "react-router-dom"; 
 
 const TaskList = () => {
     const [tasks, setTasks] = useState([]);
@@ -10,6 +11,7 @@ const TaskList = () => {
             try {
                 const data = await getTasks();
                 setTasks(data);
+                //taskService.jsからリストを受け取りdataへ入れる
             } catch (error) {
                 console.error("Failed to fetch tasks", error);
             }
@@ -20,13 +22,13 @@ const TaskList = () => {
     return (
         <div>
             <h2>タスク一覧</h2>
-            <ul>
+            
                 {tasks.map((task) => (
-                    <li key={task.id}>
+                    <p key={task.id}>
                         <Link to={`/tasks/${task.id}`}>{task.title}</Link>
-                    </li>
+                    </p>
                 ))}
-            </ul>
+            <TaskForm />
         </div>
     );
 };
