@@ -1,3 +1,5 @@
+//どこに当たるか不明だったので作業の中で一致するものがあれば削除予定
+
 const express = require("express");
 const cors = require("cors");
 const app = express();
