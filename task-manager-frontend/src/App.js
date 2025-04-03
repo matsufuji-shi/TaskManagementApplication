@@ -1,8 +1,8 @@
 import React from "react";
 import './App.css';
 import useCategories from "./pages/TaskPage";
-import UserForm from "./components/TackForm";
-import UserList from "./components/TackList";
+import UserForm from "./components/TaskForm";
+import UserList from "./components/TaskList";
 import apiService from "./services/taskService";
 
 function App() {
