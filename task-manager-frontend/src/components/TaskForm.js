@@ -24,6 +24,8 @@ function TaskForm() {
     }
   };
 
+//   追加できないのでsarver側設定してから再調整
+
   return (
     <div>
       <h2>タスクを追加</h2>
