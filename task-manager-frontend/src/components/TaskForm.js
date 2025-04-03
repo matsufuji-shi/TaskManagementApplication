@@ -1,16 +1,31 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-const UserForm = ({ addUser }) => {
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
+function TaskForm() {
+  const [taskName, setTaskName] = useState("");
+  const navigate = useNavigate(); // ページ遷移用のフック
 
-    return (
-        <div className="textBox">
-            <input type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} /><br />
-            <input type="text" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} /><br />
-            <button onClick={() => addUser(name, email)}>Add User</button>
-        </div>
-    );
-};
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("新しいタスク:", taskName);
+    navigate("/"); // タスク一覧ページに戻る
+  };
 
-export default UserForm;
+  return (
+    <div>
+      <h2>タスクを追加</h2>
+      {/* 編集にも使用するので編集の場合は編集になるようにしたい */}
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          placeholder="タスク名"
+          value={taskName}
+          onChange={(e) => setTaskName(e.target.value)}
+        />
+        <button type="submit">追加</button>
+      </form>
+    </div>
+  );
+}
+
+export default TaskForm;
