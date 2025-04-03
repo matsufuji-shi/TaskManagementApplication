@@ -1,62 +1,57 @@
-const db = require("../config/database"); // データベース接続
+const db = require("../config/database");
 
-// 全タスクを取得する
+// タスク一覧を取得する
 const getTasks = (req, res) => {
-    const sqlSelect = "SELECT * FROM tasklist";  // tasklist テーブルから全タスクを取得
+    const sqlSelect = "SELECT * FROM tasks ORDER BY id";
     db.query(sqlSelect, (err, result) => {
         if (err) {
             console.error(err);
             res.status(500).send("Error retrieving tasks from the database");
         } else {
-            res.json(result);  // 取得したタスクをJSONで返す
+            res.send(result);
         }
     });
 };
 
 // 新しいタスクを追加する
 const addTask = (req, res) => {
-    const { TaskTitle, TaskDescription } = req.body;  // フロントエンドから送られたタスク情報を取得
-    const sqlInsert = "INSERT INTO tasklist (TaskTitle, TaskDescription) VALUES (?, ?)";
-    
-    db.query(sqlInsert, [TaskTitle, TaskDescription], (err, result) => {
+    const { title, description, status } = req.body;
+    const sqlInsert = "INSERT INTO tasks (title, description, status) VALUES (?, ?, ?)";
+    db.query(sqlInsert, [title, description, status], (err, result) => {
         if (err) {
             console.error(err);
-            res.status(500).send("Failed to insert new task");
+            res.status(500).send("Failed to add new task");
         } else {
-            res.status(201).send("Task added successfully");
+            res.status(200).send("Task added successfully");
         }
     });
 };
 
-// 特定のタスクを編集する
+// 特定のタスクを更新する
 const updateTask = (req, res) => {
-    const taskId = req.params.id;  // URLパラメータからタスクIDを取得
-    const { TaskTitle, TaskDescription } = req.body;  // フロントエンドから送られた新しいタスク情報を取得
-    
-    const sqlUpdate = "UPDATE tasklist SET TaskTitle = ?, TaskDescription = ? WHERE id = ?";
-    
-    db.query(sqlUpdate, [TaskTitle, TaskDescription, taskId], (err, result) => {
+    const { id } = req.params;
+    const { title, description, status } = req.body;
+    const sqlUpdate = "UPDATE tasks SET title = ?, description = ?, status = ? WHERE id = ?";
+    db.query(sqlUpdate, [title, description, status, id], (err, result) => {
         if (err) {
             console.error(err);
             res.status(500).send("Failed to update task");
         } else {
-            res.send("Task updated successfully");
+            res.status(200).send("Task updated successfully");
         }
     });
 };
 
 // 特定のタスクを削除する
 const deleteTask = (req, res) => {
-    const taskId = req.params.id;  // URLパラメータからタスクIDを取得
-    
-    const sqlDelete = "DELETE FROM tasklist WHERE id = ?";
-    
-    db.query(sqlDelete, [taskId], (err, result) => {
+    const { id } = req.params;
+    const sqlDelete = "DELETE FROM tasks WHERE id = ?";
+    db.query(sqlDelete, [id], (err, result) => {
         if (err) {
             console.error(err);
             res.status(500).send("Failed to delete task");
         } else {
-            res.send("Task deleted successfully");
+            res.status(200).send("Task deleted successfully");
         }
     });
 };
