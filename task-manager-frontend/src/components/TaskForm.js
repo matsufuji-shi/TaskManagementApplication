@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 function TaskForm() {
   const [taskName, setTaskName] = useState("");
+  const [taskDescription, setDescription] = useState("");
   const navigate = useNavigate(); // ページ遷移用のフック
 
   const handleSubmit = (e) => {
@@ -18,9 +19,15 @@ function TaskForm() {
       <form onSubmit={handleSubmit}>
         <input
           type="text"
-          placeholder="タスク名"
+          placeholder="タスクのタイトル"
           value={taskName}
           onChange={(e) => setTaskName(e.target.value)}
+        />
+         <input
+          type="text"
+          placeholder="タスクの説明"
+          value={taskDescription}
+          onChange={(e) => setDescription(e.target.value)}
         />
         <button type="submit">追加</button>
       </form>
