@@ -1,31 +1,31 @@
 import React from "react";
-import './App.css';
-import useCategories from "./pages/TaskPage";
-import UserForm from "./components/TaskForm";
-import UserList from "./components/TaskList";
-import apiService from "./services/taskService";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import TaskList from "./components/TaskList";
+import TaskForm from "./components/TaskForm";
+import TaskDetail from "./components/TaskDetail";
+import TaskPage from "./pages/TaskPage";
 
 function App() {
-    const { categoryList, refreshCategories } = useCategories();
+  return (
+    <Router>
+      <div className="App">
+        <h1>Task Manager</h1>
+        <Routes>
+          {/* タスク一覧ページ（ホーム） */}
+          <Route path="/" element={<TaskList />} />
 
-    const addUser = (name, email) => {
-        apiService.addUser(name, email)
-            .then(() => {
-                alert("User added successfully");
-                refreshCategories();
-            })
-            .catch(err => {
-                console.error("Error adding user: ", err);
-                alert("Failed to add user");
-            });
-    };
+          {/* 新しいタスク追加ページ */}
+          <Route path="/add-task" element={<TaskForm />} />
 
-    return (
-        <div className="App">
-            <UserForm addUser={addUser} />
-            <UserList categoryList={categoryList} />
-        </div>
-    );
+          {/* 特定のタスク詳細ページ（例: /task/1） */}
+          <Route path="/task/:id" element={<TaskDetail />} />
+
+          {/* タスク管理ページ */}
+          <Route path="/tasks" element={<TaskPage />} />
+        </Routes>
+      </div>
+    </Router>
+  );
 }
 
 export default App;
