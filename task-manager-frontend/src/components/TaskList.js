@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getTasks } from "../services/taskService";
+import TaskForm from "./TaskForm";
 import { Link } from "react-router-dom"; 
 
 const TaskList = () => {
@@ -21,13 +22,13 @@ const TaskList = () => {
     return (
         <div>
             <h2>タスク一覧</h2>
-            <ul>
+            
                 {tasks.map((task) => (
-                    <li key={task.id}>
+                    <p key={task.id}>
                         <Link to={`/tasks/${task.id}`}>{task.title}</Link>
-                    </li>
+                    </p>
                 ))}
-            </ul>
+            <TaskForm />
         </div>
     );
 };
