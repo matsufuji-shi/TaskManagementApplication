@@ -1,15 +1,27 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { addTask } from "../services/taskService";
 
 function TaskForm() {
   const [taskName, setTaskName] = useState("");
   const [taskDescription, setDescription] = useState("");
   const navigate = useNavigate(); // ページ遷移用のフック
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("新しいタスク:", taskName);
-    navigate("/"); // タスク一覧ページに戻る
+
+    if (!taskName || !taskDescription) {
+      alert("タスクのタイトルと説明を入力してください");
+      return;
+    }
+
+    try {
+      await addTask({ TaskTitle: taskName, TaskDescription: taskDescription });
+      console.log("タスクが追加されました:", taskName);
+      navigate("/"); // タスク一覧ページに戻る
+    } catch (error) {
+      console.error("タスクの追加に失敗しました", error);
+    }
   };
 
   return (
@@ -23,12 +35,14 @@ function TaskForm() {
           value={taskName}
           onChange={(e) => setTaskName(e.target.value)}
         />
+        <br/>
          <input
           type="text"
           placeholder="タスクの説明"
           value={taskDescription}
           onChange={(e) => setDescription(e.target.value)}
         />
+        <br/>
         <button type="submit">追加</button>
       </form>
     </div>
