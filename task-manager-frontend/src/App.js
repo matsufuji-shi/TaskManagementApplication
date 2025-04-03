@@ -9,7 +9,7 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <h1>Task Manager</h1>
+        <h1>タスク管理ページ</h1>
         <Routes>
           {/* タスク一覧ページ（ホーム） */}
           <Route path="/" element={<TaskList />} />
