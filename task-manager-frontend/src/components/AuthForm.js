@@ -1,13 +1,18 @@
 import React, { useState } from "react";
+import axiosInstance from "../api/axiosInstance";  // APIリクエスト用のインスタンスをインポート
+import { useNavigate } from "react-router-dom";  // ページ遷移用
 
 function AuthForm() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event, action) => {
     event.preventDefault();
 
+    // バリデーションチェック
     if (!username.trim()) {
       setError("ユーザー名を入力してください");
       return;
@@ -22,14 +27,36 @@ function AuthForm() {
     }
 
     setError(""); // エラーメッセージをクリア
+    setLoading(true); // ローディング開始
 
-    console.log("フォーム送信", { username, password });
+    try {
+      let response;
+      if (action === "register") {
+        response = await axiosInstance.post("/register", { username, password });
+      } else if (action === "login") {
+        response = await axiosInstance.post("/login", { username, password });
+      }
+
+      console.log("レスポンス:", response.data);
+
+      if (response.data.token) {
+        // JWTトークンをローカルストレージに保存
+        localStorage.setItem("token", response.data.token);
+        
+        // タスク管理ページにリダイレクト
+        navigate("/");
+      }
+    } catch (err) {
+      setError(err.response?.data?.message || "エラーが発生しました");
+    } finally {
+      setLoading(false); // ローディング終了
+    }
   };
 
   return (
     <div>
       <h2>ユーザー登録 / ログイン</h2>
-      <form onSubmit={handleSubmit}>
+      <form>
         <div>
           <label>ユーザー名:</label>
           <input
@@ -47,8 +74,12 @@ function AuthForm() {
           />
         </div>
         {error && <p style={{ color: "red" }}>{error}</p>}
-        <button type="submit">登録</button>
-        <button type="submit">ログイン</button>
+        <button onClick={(e) => handleSubmit(e, "register")} disabled={loading}>
+          {loading ? "登録中..." : "登録"}
+        </button>
+        <button onClick={(e) => handleSubmit(e, "login")} disabled={loading}>
+          {loading ? "ログイン中..." : "ログイン"}
+        </button>
       </form>
     </div>
   );
