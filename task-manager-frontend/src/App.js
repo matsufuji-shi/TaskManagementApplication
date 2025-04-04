@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import TaskList from "./components/TaskList";
 import TaskForm from "./components/TaskForm";
 import TaskDetail from "./components/TaskDetail";
+import AuthForm from "./components/AuthForm";
 
 function App() {
   return (
@@ -18,6 +19,8 @@ function App() {
           <Route path="/tasks/:id" element={<TaskDetail />} />
           {/* 編集画面ページ */}
           <Route path="/edit/:id" element={<TaskForm />} /> {/* 編集ページを追加 */}
+          <Route path="/auth" element={<AuthForm />} />
+          {/* ログイン・新規登録画面追加 */}
         </Routes>
       </div>
     </Router>

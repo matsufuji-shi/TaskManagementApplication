@@ -34,12 +34,14 @@ function AuthForm() {
         value={username}
         onChange={(e) => setUsername(e.target.value)}
       />
+      <br/>
       <input
         type="password"
         placeholder="パスワード"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
+      <br/>
       <button onClick={() => handleAuth("register")}>登録</button>
       <button onClick={() => handleAuth("login")}>ログイン</button>
     </div>
