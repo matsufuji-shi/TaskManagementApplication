@@ -8,7 +8,7 @@ import AuthForm from "./components/AuthForm";
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  // ログイン状態を確認するために、初期レンダリング時にlocalStorageを確認
+  // 初回レンダリング時にlocalStorageでログイン状態を確認
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -16,17 +16,27 @@ function App() {
     }
   }, []);
 
+  // ログアウト処理
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setIsLoggedIn(false);
+  };
+
   return (
     <Router>
       <div className="App">
         <h1>タスク管理ページ</h1>
+
+        {/* ログインしている場合はログアウトボタンを表示 */}
+        {isLoggedIn && <button onClick={handleLogout}>ログアウト</button>}
+
         <Routes>
           {/* ログインしていない場合はAuthFormにリダイレクト */}
           <Route
             path="/auth"
             element={
               isLoggedIn ? (
-                <Navigate to="/" /> // すでにログインしている場合はタスク一覧にリダイレクト
+                <Navigate to="/" /> // ログインしている場合はタスク一覧にリダイレクト
               ) : (
                 <AuthForm setIsLoggedIn={setIsLoggedIn} />
               )

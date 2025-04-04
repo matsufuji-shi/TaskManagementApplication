@@ -7,11 +7,11 @@ const axiosInstance = axios.create({
   },
 });
 // リクエスト時に自動でJWTトークンをヘッダーに追加
-axiosInstance.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
-});
+// axiosInstance.interceptors.request.use((config) => {
+//   const token = localStorage.getItem("token");
+//   if (token) {
+//     config.headers.Authorization = `Bearer ${token}`;
+//   }
+//   return config;
+// });
 export default axiosInstance;
