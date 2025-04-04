@@ -5,20 +5,27 @@ import axiosInstance from "../api/axiosInstance";
 function TaskDetail() {
   const { id } = useParams(); // URLのIDを取得
   const [task, setTask] = useState(null);
+  const [loading, setLoading] = useState(true);  // ローディング状態の管理
+  const [error, setError] = useState(null);  // エラー状態の管理
   const navigate = useNavigate();
 
+  // タスクの取得
   useEffect(() => {
     const fetchTask = async () => {
       try {
         const response = await axiosInstance.get(`/tasks/${id}`);
         setTask(response.data); // タスク情報をstateに保存
+        setLoading(false);  // ロード完了
       } catch (error) {
         console.error("タスクの取得に失敗しました", error);
+        setError("タスクの取得に失敗しました");
+        setLoading(false);  // ロード完了
       }
     };
     fetchTask();
   }, [id]);
 
+  // タスクの削除
   const handleDelete = async () => {
     try {
       await axiosInstance.delete(`/tasks/${id}`);
@@ -28,6 +35,14 @@ function TaskDetail() {
       console.error("タスクの削除に失敗しました", error);
     }
   };
+
+  if (loading) {
+    return <p>タスクを読み込み中...</p>;
+  }
+
+  if (error) {
+    return <p>{error}</p>;
+  }
 
   return (
     <div>
@@ -40,7 +55,7 @@ function TaskDetail() {
           <button onClick={handleDelete}>削除</button>
         </>
       ) : (
-        <p>タスクを読み込み中...</p>
+        <p>タスクが存在しません。</p>
       )}
     </div>
   );
