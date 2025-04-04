@@ -1,11 +1,29 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { addTask } from "../services/taskService";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { addTask, getTasks } from "../services/taskService";
+import axiosInstance from "../api/axiosInstance";
 
 function TaskForm() {
+  const { id } = useParams();
   const [taskName, setTaskName] = useState("");
   const [taskDescription, setDescription] = useState("");
-  const navigate = useNavigate(); // ページ遷移用のフック
+  const navigate = useNavigate();
+  const isEditing = Boolean(id);
+
+  useEffect(() => {
+    if (isEditing) {
+      const fetchTask = async () => {
+        try {
+          const response = await axiosInstance.get(`/tasks/${id}`);
+          setTaskName(response.data.TaskTitle);
+          setDescription(response.data.TaskDescription);
+        } catch (error) {
+          console.error("タスクの取得に失敗しました", error);
+        }
+      };
+      fetchTask();
+    }
+  }, [id, isEditing]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -16,20 +34,25 @@ function TaskForm() {
     }
 
     try {
-      await addTask({ TaskTitle: taskName, TaskDescription: taskDescription });
-      console.log("タスクが追加されました:", taskName);
-      navigate("/"); // タスク一覧ページに戻る
+      if (isEditing) {
+        await axiosInstance.put(`/tasks/${id}`, {
+          TaskTitle: taskName,
+          TaskDescription: taskDescription,
+        });
+        console.log("タスクが更新されました:", taskName);
+      } else {
+        await addTask({ TaskTitle: taskName, TaskDescription: taskDescription });
+        console.log("タスクが追加されました:", taskName);
+      }
+      navigate("/");
     } catch (error) {
-      console.error("タスクの追加に失敗しました", error);
+      console.error("タスクの処理に失敗しました", error);
     }
   };
 
-//   追加できないのでsarver側設定してから再調整
-
   return (
     <div>
-      <h2>タスクを追加</h2>
-      {/* 編集にも使用するので編集の場合は編集になるようにしたい */}
+      <h2>{isEditing ? "タスクを編集" : "タスクを追加"}</h2>
       <form onSubmit={handleSubmit}>
         <input
           type="text"
@@ -38,14 +61,14 @@ function TaskForm() {
           onChange={(e) => setTaskName(e.target.value)}
         />
         <br/>
-         <input
+        <input
           type="text"
           placeholder="タスクの説明"
           value={taskDescription}
           onChange={(e) => setDescription(e.target.value)}
         />
         <br/>
-        <button type="submit">追加</button>
+        <button type="submit">{isEditing ? "更新" : "追加"}</button>
       </form>
     </div>
   );
