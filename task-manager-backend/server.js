@@ -4,11 +4,12 @@ const cors = require("cors");
 const db = require("./config/database");
 const app = express();
 
-const userRoutes = require("./routes/auth");  // 既存のユーザー認証ルート
-const tasksRouter = require("./routes/tasks"); // 追加するタスク管理ルート
+// 既存のルート
+const userRoutes = require("./routes/auth");  // ユーザー認証ルート
+const tasksRouter = require("./routes/tasks"); // タスク管理ルート
 
-app.use(express.json());
-app.use(cors());
+app.use(express.json());  // JSONのリクエストボディをパースする
+app.use(cors());  // CORSを許可
 
 // データベース接続確認
 db.getConnection((err, connection) => {
@@ -21,10 +22,13 @@ db.getConnection((err, connection) => {
     }
 });
 
+// ユーザー認証ルートを追加
+app.use("/api/auth", userRoutes);  // /api/auth にアクセスした際に auth.js を使用
 
 // タスク管理用のAPIルートを追加
-app.use("/api/tasks", tasksRouter);
+app.use("/api/tasks", tasksRouter);  // /api/tasks にアクセスした際に tasksRouter を使用
 
+// サーバを起動
 app.listen(3001, () => {
     console.log('Server running on port 3001');
 });
