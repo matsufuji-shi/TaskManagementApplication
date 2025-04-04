@@ -9,20 +9,39 @@ function TaskDetail() {
   const [error, setError] = useState(null);  // エラー状態の管理
   const navigate = useNavigate();
 
+
   // タスクの取得
+  // useEffect(() => {
+  //   const fetchTask = async () => {
+  //     try {
+  //       const response = await axiosInstance.get(`/tasks/${id}`);
+  //       setTask(response.data); // タスク情報をstateに保存
+  //       setLoading(false);  // ロード完了
+  //     } catch (error) {
+  //       console.error("タスクの取得に失敗しました", error);
+  //       setError("タスクの取得に失敗しました");
+  //       setLoading(false);  // ロード完了
+  //     }
+  //   };
+  //   fetchTask();
+  // }, [id]);
   useEffect(() => {
-    const fetchTask = async () => {
-      try {
-        const response = await axiosInstance.get(`/tasks/${id}`);
-        setTask(response.data); // タスク情報をstateに保存
-        setLoading(false);  // ロード完了
-      } catch (error) {
-        console.error("タスクの取得に失敗しました", error);
-        setError("タスクの取得に失敗しました");
-        setLoading(false);  // ロード完了
-      }
-    };
-    fetchTask();
+    console.log("Task ID from useParams:", id);  // idをログに出力
+
+    if (id) {
+      const fetchTask = async () => {
+        try {
+          const response = await axiosInstance.get(`/tasks/${id}`);
+          console.log("API response:", response.data);
+          setTask(response.data);
+        } catch (error) {
+          console.error("タスクの取得に失敗しました", error);
+        }
+      };
+      fetchTask();
+    } else {
+      console.log("idが取得できていません");
+    }
   }, [id]);
 
   // タスクの削除
