@@ -1,49 +1,55 @@
 import React, { useState } from "react";
-import axiosInstance from "../api/axiosInstance"; // APIリクエスト用のAxiosインスタンス
-import { useNavigate } from "react-router-dom";
 
 function AuthForm() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(null);
-  const navigate = useNavigate();
+  const [error, setError] = useState("");
 
-  const handleAuth = async (type) => {
-    setError(null); // エラーをクリア
-    try {
-      const response = await axiosInstance.post(`/auth/${type}`, { username, password });
-      console.log(`${type} 成功:`, response.data);
-      if (type === "login") {
-        localStorage.setItem("token", response.data.token); // トークンを保存
-        navigate("/"); // ログイン後、タスク一覧に遷移
-      } else {
-        alert("登録が完了しました！ログインしてください。");
-      }
-    } catch (err) {
-      setError(err.response?.data || "認証に失敗しました");
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    if (!username.trim()) {
+      setError("ユーザー名を入力してください");
+      return;
     }
+    if (!password.trim()) {
+      setError("パスワードを入力してください");
+      return;
+    }
+    if (password.length < 6) {
+      setError("パスワードは6文字以上にしてください");
+      return;
+    }
+
+    setError(""); // エラーメッセージをクリア
+
+    console.log("フォーム送信", { username, password });
   };
 
   return (
     <div>
-      <h2>ユーザー認証</h2>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      <input
-        type="text"
-        placeholder="ユーザー名"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-      />
-      <br/>
-      <input
-        type="password"
-        placeholder="パスワード"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <br/>
-      <button onClick={() => handleAuth("register")}>登録</button>
-      <button onClick={() => handleAuth("login")}>ログイン</button>
+      <h2>ユーザー登録 / ログイン</h2>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label>ユーザー名:</label>
+          <input
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+        </div>
+        <div>
+          <label>パスワード:</label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
+        {error && <p style={{ color: "red" }}>{error}</p>}
+        <button type="submit">登録</button>
+        <button type="submit">ログイン</button>
+      </form>
     </div>
   );
 }
