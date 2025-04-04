@@ -33,10 +33,10 @@ function AuthForm() {
       let response;
       if (action === "register") {
         // ユーザー登録リクエスト
-        response = await axiosInstance.post("/register", { username, password });
+        response = await axiosInstance.post("/auth/register", { username, password });
       } else if (action === "login") {
         // ユーザーログインリクエスト
-        response = await axiosInstance.post("/login", { username, password });
+        response = await axiosInstance.post("/auth/login", { username, password });
       }
 
       console.log("レスポンス:", response.data);
