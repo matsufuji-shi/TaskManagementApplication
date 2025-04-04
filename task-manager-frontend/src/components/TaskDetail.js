@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import axiosInstance from "../api/axiosInstance";
+import axiosInstance from "../api/axiosInstance";  // axiosインスタンスをインポート
 
 function TaskDetail() {
   const { id } = useParams(); // URLのIDを取得
@@ -9,22 +9,7 @@ function TaskDetail() {
   const [error, setError] = useState(null);  // エラー状態の管理
   const navigate = useNavigate();
 
-
   // タスクの取得
-  // useEffect(() => {
-  //   const fetchTask = async () => {
-  //     try {
-  //       const response = await axiosInstance.get(`/tasks/${id}`);
-  //       setTask(response.data); // タスク情報をstateに保存
-  //       setLoading(false);  // ロード完了
-  //     } catch (error) {
-  //       console.error("タスクの取得に失敗しました", error);
-  //       setError("タスクの取得に失敗しました");
-  //       setLoading(false);  // ロード完了
-  //     }
-  //   };
-  //   fetchTask();
-  // }, [id]);
   useEffect(() => {
     console.log("Task ID from useParams:", id);  // idをログに出力
 
@@ -33,9 +18,12 @@ function TaskDetail() {
         try {
           const response = await axiosInstance.get(`/tasks/${id}`);
           console.log("API response:", response.data);
-          setTask(response.data);
+          setTask(response.data); // タスク情報をstateに保存
+          setLoading(false);  // ロード完了
         } catch (error) {
           console.error("タスクの取得に失敗しました", error);
+          setError("タスクの取得に失敗しました");
+          setLoading(false);  // ロード完了
         }
       };
       fetchTask();
@@ -55,14 +43,17 @@ function TaskDetail() {
     }
   };
 
+  // ローディング状態の表示
   if (loading) {
     return <p>タスクを読み込み中...</p>;
   }
 
+  // エラーが発生した場合の表示
   if (error) {
     return <p>{error}</p>;
   }
 
+  // タスクが見つかった場合の表示
   return (
     <div>
       <h1>タスク詳細</h1>
