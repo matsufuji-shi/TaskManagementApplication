@@ -9,7 +9,8 @@ const userRoutes = require("./routes/auth");  // ユーザー認証ルート
 const tasksRouter = require("./routes/tasks"); // タスク管理ルート
 
 app.use(express.json());  // JSONのリクエストボディをパースする
-app.use(cors());  // CORSを許可
+app.use(cors()); 
+app.use("/api/auth", userRoutes); // CORSを許可
 
 // データベース接続確認
 db.getConnection((err, connection) => {
