@@ -1,11 +1,16 @@
 import React, { useState } from "react";
+import axiosInstance from "../api/axiosInstance";
+import { useNavigate } from "react-router-dom";
 
-function AuthForm() {
+function AuthForm({ setIsLoggedIn }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
+
+  const handleSubmit = async (event, action) => {
     event.preventDefault();
 
     if (!username.trim()) {
@@ -21,15 +26,36 @@ function AuthForm() {
       return;
     }
 
-    setError(""); // エラーメッセージをクリア
+    setError("");  // エラーをリセット
+    setLoading(true);  // ローディングを開始
 
-    console.log("フォーム送信", { username, password });
-  };
+    try {
+      let response;
+      if (action === "register") {
+        response = await axiosInstance.post("/auth/register", { username, password });
+      } else if (action === "login") {
+        response = await axiosInstance.post("/auth/login", { username, password });
+      }
 
+      console.log("レスポンス:", response.data);
+
+      if (response.data.token) {
+        localStorage.setItem("token", response.data.token);
+        setIsLoggedIn(true);  // ログイン状態を更新
+        navigate("/");  // タスク一覧に遷移
+      }
+    } catch (err) {
+      // AxiosErrorの詳細を表示
+      console.error("ログインエラー:", err.response ? err.response.data : err.message);
+      setError(err.response?.data?.message || "エラーが発生しました");
+    } finally {
+      setLoading(false);  // ローディング終了
+    }
+};
   return (
     <div>
       <h2>ユーザー登録 / ログイン</h2>
-      <form onSubmit={handleSubmit}>
+      <form>
         <div>
           <label>ユーザー名:</label>
           <input
@@ -47,8 +73,12 @@ function AuthForm() {
           />
         </div>
         {error && <p style={{ color: "red" }}>{error}</p>}
-        <button type="submit">登録</button>
-        <button type="submit">ログイン</button>
+        <button onClick={(e) => handleSubmit(e, "register")} disabled={loading}>
+          {loading ? "登録中..." : "登録"}
+        </button>
+        <button onClick={(e) => handleSubmit(e, "login")} disabled={loading}>
+          {loading ? "ログイン中..." : "ログイン"}
+        </button>
       </form>
     </div>
   );
