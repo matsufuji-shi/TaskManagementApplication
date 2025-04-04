@@ -1,4 +1,3 @@
-
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import TaskList from "./components/TaskList";
@@ -17,6 +16,8 @@ function App() {
           <Route path="/add-task" element={<TaskForm />} />
           {/* 特定のタスク詳細ページ */}
           <Route path="/tasks/:id" element={<TaskDetail />} />
+          {/* 編集画面ページ */}
+          <Route path="/edit/:id" element={<TaskForm />} /> {/* 編集ページを追加 */}
         </Routes>
       </div>
     </Router>
