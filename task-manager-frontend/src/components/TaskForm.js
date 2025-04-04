@@ -2,9 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { addTask } from "../services/taskService";
 import axiosInstance from "../api/axiosInstance";
-import { getTasks } from "../services/taskService"; // getTasksをインポート
 
-function TaskForm() {
+function TaskForm({ onTaskAdded }) {
   const { id } = useParams();
   const [taskName, setTaskName] = useState("");
   const [taskDescription, setDescription] = useState("");
@@ -53,9 +52,10 @@ function TaskForm() {
         // 追加処理
         await addTask({ title: taskName, description: taskDescription });
         console.log("タスクが追加されました:", taskName);
-        // タスク追加後、TaskList.jsでタスク一覧を再取得
-        const tasks = await getTasks();  // 再取得
-        console.log("新しいタスク一覧:", tasks);
+        // タスク追加後にリストを更新
+        if (onTaskAdded) {
+          onTaskAdded();
+        }
       }
       navigate("/"); // 一覧ページにリダイレクト
     } catch (error) {
