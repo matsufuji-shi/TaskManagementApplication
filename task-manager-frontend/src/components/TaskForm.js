@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { addTask, getTaskById, updateTask } from "../services/taskService";
+import { addTask, getTasks } from "../services/taskService";
+import axiosInstance from "../api/axiosInstance";
 
 function TaskForm() {
   const { id } = useParams();
@@ -13,9 +14,9 @@ function TaskForm() {
     if (isEditing) {
       const fetchTask = async () => {
         try {
-          const task = await getTaskById(id);
-          setTaskName(task.TaskTitle);
-          setDescription(task.TaskDescription);
+          const response = await axiosInstance.get(`/tasks/${id}`);
+          setTaskName(response.data.TaskTitle);
+          setDescription(response.data.TaskDescription);
         } catch (error) {
           console.error("タスクの取得に失敗しました", error);
         }
@@ -34,7 +35,10 @@ function TaskForm() {
 
     try {
       if (isEditing) {
-        await updateTask(id, { TaskTitle: taskName, TaskDescription: taskDescription });
+        await axiosInstance.put(`/tasks/${id}`, {
+          TaskTitle: taskName,
+          TaskDescription: taskDescription,
+        });
         console.log("タスクが更新されました:", taskName);
       } else {
         await addTask({ TaskTitle: taskName, TaskDescription: taskDescription });
