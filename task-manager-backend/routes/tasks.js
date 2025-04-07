@@ -32,13 +32,13 @@ router.get("/:id", (req, res) => {
 
 // 🔵 新しいタスクを追加 (POST /tasks)
 router.post("/", (req, res) => {
-  const { title, description } = req.body;
+  const { title, description, status, dueDate } = req.body;  // dueDate を受け取る
   if (!title || !description) {
     return res.status(400).send("タイトルと説明が必要です");
   }
 
-  const sql = "INSERT INTO tasks (title, description, status) VALUES (?, ?, '未完了')";
-  db.query(sql, [title, description], (err, result) => {
+  const sql = "INSERT INTO tasks (title, description, status, due_date) VALUES (?, ?, ?, ?)";
+  db.query(sql, [title, description, status, dueDate], (err, result) => {
     if (err) {
       console.error(err);
       return res.status(500).send("タスクの追加に失敗しました");
@@ -49,15 +49,15 @@ router.post("/", (req, res) => {
 
 // 🟠 特定のタスクを更新 (PUT /tasks/:id)
 router.put("/:id", (req, res) => {
-  const { title, description, status } = req.body;
+  const { title, description, status, dueDate } = req.body;  // dueDate を受け取る
   const { id } = req.params;
 
   if (!title || !description || !status) {
     return res.status(400).send("タイトル、説明、状態が必要です");
   }
 
-  const sql = "UPDATE tasks SET title = ?, description = ?, status = ? WHERE id = ?";
-  db.query(sql, [title, description, status, id], (err, result) => {
+  const sql = "UPDATE tasks SET title = ?, description = ?, status = ?, due_date = ? WHERE id = ?";
+  db.query(sql, [title, description, status, dueDate, id], (err, result) => {
     if (err) {
       console.error(err);
       return res.status(500).send("タスクの更新に失敗しました");
