@@ -27,6 +27,7 @@ router.post("/register", async (req, res) => {
       }
 
       const hashedPassword = await bcrypt.hash(password, 10);
+      //10はソルトの強度(セキュリティ度)
       const sql = "INSERT INTO userslist (username, password) VALUES (?, ?)";
       db.query(sql, [username, hashedPassword], (err, result) => {
         if (err) {
