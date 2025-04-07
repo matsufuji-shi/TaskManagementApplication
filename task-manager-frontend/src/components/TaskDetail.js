@@ -60,7 +60,9 @@ function TaskDetail() {
       {task ? (
         <>
           <h2>{task.title}</h2>
-          <p>{task.description}</p>
+          <p><strong>説明:</strong> {task.description}</p>
+          <p><strong>期限日:</strong> {task.dueDate}</p> {/* 期限日表示 */}
+          <p><strong>ステータス:</strong> {task.status}</p> {/* ステータス表示 */}
           <Link to={`/edit/${id}`}><button>編集</button></Link>
           <button onClick={handleDelete}>削除</button>
         </>
