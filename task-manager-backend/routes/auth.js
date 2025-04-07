@@ -61,6 +61,7 @@ router.post("/login", (req, res) => {
     }
 
     const user = results[0];
+    //パスワード適合(bcrypt.compare(入力パスワード, 保存されてるハッシュ))
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(401).json({ message: "パスワードが間違っています" });
