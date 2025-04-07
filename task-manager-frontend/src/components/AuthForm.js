@@ -39,6 +39,7 @@ function AuthForm({ setIsLoggedIn }) {
 
       console.log("レスポンス:", response.data);
 
+      //ログイン後トークンあるか確認してローカルストレージに保存される
       if (response.data.token) {
         localStorage.setItem("token", response.data.token);
         setIsLoggedIn(true);  // ログイン状態を更新
