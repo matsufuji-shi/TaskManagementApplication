@@ -27,6 +27,7 @@ router.post("/register", async (req, res) => {
       }
 
       const hashedPassword = await bcrypt.hash(password, 10);
+      //10はソルトの強度(セキュリティ度)
       const sql = "INSERT INTO userslist (username, password) VALUES (?, ?)";
       db.query(sql, [username, hashedPassword], (err, result) => {
         if (err) {
@@ -60,6 +61,7 @@ router.post("/login", (req, res) => {
     }
 
     const user = results[0];
+    //パスワード適合(bcrypt.compare(入力パスワード, 保存されてるハッシュ))
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(401).json({ message: "パスワードが間違っています" });
