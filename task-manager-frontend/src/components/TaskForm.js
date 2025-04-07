@@ -7,6 +7,8 @@ function TaskForm({ onTaskAdded }) {
   const { id } = useParams();
   const [taskName, setTaskName] = useState("");
   const [taskDescription, setDescription] = useState("");
+  const [dueDate, setDueDate] = useState("");  // 期限日
+  const [status, setStatus] = useState("未完了");  // ステータス（未完了、完了）
   const [originalTaskName, setOriginalTaskName] = useState("");  // 編集前のタイトル
   const [originalDescription, setOriginalDescription] = useState("");  // 編集前の説明
   const navigate = useNavigate();
@@ -20,8 +22,10 @@ function TaskForm({ onTaskAdded }) {
           const response = await axiosInstance.get(`/tasks/${id}`);
           setTaskName(response.data.title);
           setDescription(response.data.description);
-          setOriginalTaskName(response.data.title);  // 編集前のタイトルを保存
-          setOriginalDescription(response.data.description);  // 編集前の説明を保存
+          setDueDate(response.data.dueDate);  // 期限日の取得
+          setStatus(response.data.status);  // ステータスの取得
+          setOriginalTaskName(response.data.title);
+          setOriginalDescription(response.data.description);
         } catch (error) {
           console.error("タスクの取得に失敗しました", error);
         }
@@ -34,23 +38,27 @@ function TaskForm({ onTaskAdded }) {
   const handleSave = async (e) => {
     e.preventDefault();
 
-    if (!taskName || !taskDescription) {
-      alert("タスクのタイトルと説明を入力してください");
+    // バリデーション（空チェック）
+    if (!taskName || !taskDescription || !dueDate) {
+      alert("タスクのタイトル、説明、期限日を入力してください");
       return;
     }
 
     try {
+      const taskData = {
+        title: taskName,
+        description: taskDescription,
+        dueDate: dueDate,
+        status: status,  // ステータスを追加
+      };
+
       if (isEditing) {
         // 更新処理
-        await axiosInstance.put(`/tasks/${id}`, {
-          title: taskName,
-          description: taskDescription,
-          status: "未完了",  // 状態は未完了に設定（必要に応じて変更）
-        });
+        await axiosInstance.put(`/tasks/${id}`, taskData);
         console.log("タスクが更新されました:", taskName);
       } else {
         // 追加処理
-        await addTask({ title: taskName, description: taskDescription });
+        await addTask(taskData);
         console.log("タスクが追加されました:", taskName);
         // タスク追加後にリストを更新
         if (onTaskAdded) {
@@ -67,6 +75,8 @@ function TaskForm({ onTaskAdded }) {
   const handleCancel = () => {
     setTaskName(originalTaskName);  // 編集前のタイトルに戻す
     setDescription(originalDescription);  // 編集前の説明に戻す
+    setDueDate("");  // 期限日をリセット
+    setStatus("未完了");  // ステータスをリセット
     navigate(`/tasks/${id}`);  // 詳細ページに戻る
   };
 
@@ -87,6 +97,17 @@ function TaskForm({ onTaskAdded }) {
           value={taskDescription}
           onChange={(e) => setDescription(e.target.value)}
         />
+        <br />
+        <input
+          type="date"
+          value={dueDate}
+          onChange={(e) => setDueDate(e.target.value)}
+        />
+        <br />
+        <select value={status} onChange={(e) => setStatus(e.target.value)}>
+          <option value="未完了">未完了</option>
+          <option value="完了">完了</option>
+        </select>
         <br />
         <button type="submit">{isEditing ? "保存" : "追加"}</button>
         {isEditing && <button type="button" onClick={handleCancel}>キャンセル</button>}
