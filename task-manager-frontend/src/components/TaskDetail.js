@@ -3,27 +3,25 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import axiosInstance from "../api/axiosInstance";  // axiosインスタンスをインポート
 
 function TaskDetail() {
-  const { id } = useParams(); // URLのIDを取得
+  const { id } = useParams(); 
   const [task, setTask] = useState(null);
-  const [loading, setLoading] = useState(true);  // ローディング状態の管理
-  const [error, setError] = useState(null);  // エラー状態の管理
+  const [loading, setLoading] = useState(true);  
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   // タスクの取得
   useEffect(() => {
-    console.log("Task ID from useParams:", id);  // idをログに出力
 
     if (id) {
       const fetchTask = async () => {
         try {
           const response = await axiosInstance.get(`/tasks/${id}`);
-          console.log("API response:", response.data);
-          setTask(response.data); // タスク情報をstateに保存
-          setLoading(false);  // ロード完了
+          setTask(response.data);
+          setLoading(false);
         } catch (error) {
           console.error("タスクの取得に失敗しました", error);
           setError("タスクの取得に失敗しました");
-          setLoading(false);  // ロード完了
+          setLoading(false);  
         }
       };
       fetchTask();
