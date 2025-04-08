@@ -10,7 +10,7 @@ const TaskList = () => {
   const fetchTasks = async () => {
     try {
       const data = await getTasks();
-      setTasks(data);  // タスクを状態としてセット
+      setTasks(data);
     } catch (error) {
       console.error("Failed to fetch tasks", error);
     }
@@ -30,8 +30,8 @@ const TaskList = () => {
           <Link to={`/tasks/${task.id}`}>{task.title}</Link>
         </p>
       ))}
-      
-      <TaskForm onTaskAdded={fetchTasks} />  {/* 新しいタスクが追加された後にリスト更新 */}
+      {/* 追加後一覧取得 */}
+      <TaskForm onTaskAdded={fetchTasks} /> 
     </div>
   );
 };
