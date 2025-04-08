@@ -1,16 +1,19 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../config/database"); // データベース接続をインポート
+const authenticate = require('../middleware/authMiddleware');
 
 // 🟢 タスク一覧を取得 (GET /tasks)
-router.get("/", (req, res) => {
-  const sql = "SELECT * FROM tasks ORDER BY id DESC";
-  db.query(sql, (err, result) => {
+router.get('/', authenticate, (req, res) => {
+  const userId = req.userId; // 認証ミドルウェアから取得
+
+  const sql = "SELECT * FROM tasks WHERE user_id = ?";
+  db.query(sql, [userId], (err, result) => {
     if (err) {
       console.error(err);
       return res.status(500).send("タスクの取得に失敗しました");
     }
-    res.json(result); // タスクの一覧を返す
+    res.json(result);
   });
 });
 
@@ -31,14 +34,19 @@ router.get("/:id", (req, res) => {
 });
 
 // 🔵 新しいタスクを追加 (POST /tasks)
-router.post("/", (req, res) => {
-  const { title, description, status, dueDate } = req.body;  // dueDate を受け取る
+router.post("/", authenticate, (req, res) => {
+  const { title, description, status, dueDate } = req.body;
+  const userId = req.userId; // ← ここから自動的に取得！
+
   if (!title || !description) {
     return res.status(400).send("タイトルと説明が必要です");
   }
 
-  const sql = "INSERT INTO tasks (title, description, status, due_date) VALUES (?, ?, ?, ?)";
-  db.query(sql, [title, description, status, dueDate], (err, result) => {
+  const sql = `
+    INSERT INTO tasks (title, description, status, due_date, user_id)
+    VALUES (?, ?, ?, ?, ?)
+  `;
+  db.query(sql, [title, description, status, dueDate, userId], (err, result) => {
     if (err) {
       console.error(err);
       return res.status(500).send("タスクの追加に失敗しました");
