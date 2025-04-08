@@ -9,7 +9,7 @@ function AuthForm({ setIsLoggedIn }) {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-
+//バリデーション
   const handleSubmit = async (event, action) => {
     event.preventDefault();
 
@@ -39,14 +39,14 @@ function AuthForm({ setIsLoggedIn }) {
 
       console.log("レスポンス:", response.data);
 
-      //ログイン後トークンあるか確認してローカルストレージに保存される
+      //ログイン時
       if (response.data.token) {
         localStorage.setItem("token", response.data.token);
         setIsLoggedIn(true);  // ログイン状態を更新
         navigate("/");  // タスク一覧に遷移
       }
     } catch (err) {
-      // AxiosErrorの詳細を表示
+      // エラー処理
       console.error("ログインエラー:", err.response ? err.response.data : err.message);
       setError(err.response?.data?.message || "エラーが発生しました");
     } finally {
