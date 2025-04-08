@@ -1,11 +1,12 @@
 const express = require("express");
 const router = express.Router();
-const db = require("../config/database"); // データベース接続をインポート
+const db = require("../config/database"); 
 const authenticate = require('../middleware/authMiddleware');
 
-// 🟢 タスク一覧を取得 (GET /tasks)
+//タスク一覧を取得 (GET /tasks)
 router.get('/', authenticate, (req, res) => {
-  const userId = req.userId; // 認証ミドルウェアから取得
+  //ミドルウェアからユーザーIDを取得
+  const userId = req.userId;
 
   const sql = "SELECT * FROM tasks WHERE user_id = ?";
   db.query(sql, [userId], (err, result) => {
@@ -17,7 +18,7 @@ router.get('/', authenticate, (req, res) => {
   });
 });
 
-// 🟡 特定のタスクを取得 (GET /tasks/:id)
+//特定のタスクを取得 (GET /tasks/:id)
 router.get("/:id", (req, res) => {
   const { id } = req.params;
   const sql = "SELECT * FROM tasks WHERE id = ?";
@@ -29,14 +30,15 @@ router.get("/:id", (req, res) => {
     if (result.length === 0) {
       return res.status(404).send("タスクが見つかりません");
     }
-    res.json(result[0]); // 取得したタスクの詳細を返す
+    res.json(result[0]);
   });
 });
 
-// 🔵 新しいタスクを追加 (POST /tasks)
+// 新しいタスクを追加 (POST /tasks)
 router.post("/", authenticate, (req, res) => {
   const { title, description, status, dueDate } = req.body;
-  const userId = req.userId; // ← ここから自動的に取得！
+  //ミドルウェアからユーザーIDを取得
+  const userId = req.userId; 
 
   if (!title || !description) {
     return res.status(400).send("タイトルと説明が必要です");
@@ -55,9 +57,9 @@ router.post("/", authenticate, (req, res) => {
   });
 });
 
-// 🟠 特定のタスクを更新 (PUT /tasks/:id)
+// 特定のタスクを更新 (PUT /tasks/:id)
 router.put("/:id", (req, res) => {
-  const { title, description, status, dueDate } = req.body;  // dueDate を受け取る
+  const { title, description, status, dueDate } = req.body; 
   const { id } = req.params;
 
   if (!title || !description || !status) {
@@ -74,7 +76,7 @@ router.put("/:id", (req, res) => {
   });
 });
 
-// 🔴 特定のタスクを削除 (DELETE /tasks/:id)
+//特定のタスクを削除 (DELETE /tasks/:id)
 router.delete("/:id", (req, res) => {
   const { id } = req.params;
   const sql = "DELETE FROM tasks WHERE id = ?";
