@@ -27,7 +27,6 @@ function App() {
       <div className="App">
         <h1>タスク管理ページ</h1>
 
-        {/* useLocation フックをRouter内で使用 */}
         <Routes>
           <Route
             path="/"
