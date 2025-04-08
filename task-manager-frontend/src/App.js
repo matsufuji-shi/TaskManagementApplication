@@ -8,7 +8,7 @@ import AuthForm from "./components/AuthForm";
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  // 初回レンダリング時にlocalStorageでログイン状態を確認
+  //ログイン状態を確認
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -72,7 +72,7 @@ function App() {
 
 // ログアウトボタンのコンポーネント
 const LogoutButton = ({ onLogout }) => {
-  const location = useLocation(); // useLocationをここで使う
+  const location = useLocation(); 
 
   return (
     location.pathname === "/" && (
