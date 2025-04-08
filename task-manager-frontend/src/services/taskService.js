@@ -4,11 +4,11 @@ import axiosInstance from "../api/axiosInstance";
 const getAuthToken = () => {
     return localStorage.getItem("token");
 };
-
+const token = getAuthToken();
 // タスク一覧を取得
 export const getTasks = async () => {
     try {
-        const token = getAuthToken();
+        // const token = getAuthToken();
         const response = await axiosInstance.get("/tasks", {
             headers: {
                 Authorization: token ? `Bearer ${token}` : "",
@@ -16,7 +16,6 @@ export const getTasks = async () => {
         });
         return response.data;
     } catch (error) {
-        console.error("Error fetching tasks:", error);
         throw error;
     }
 };
@@ -24,7 +23,7 @@ export const getTasks = async () => {
 // 新しいタスクを追加
 export const addTask = async (taskData) => {
     try {
-        const token = getAuthToken(); 
+        // const token = getAuthToken(); 
         const response = await axiosInstance.post("/tasks", taskData, {
             headers: {
                 Authorization: token ? `Bearer ${token}` : "",
