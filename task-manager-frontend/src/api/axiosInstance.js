@@ -1,7 +1,8 @@
 import axios from "axios";
 
+//バックエンドとのAPI通信
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:3001/api", //バックエンドのAPIのURL
+  baseURL: "http://localhost:3001/api", 
   headers: {
     "Content-Type": "application/json",
   },
