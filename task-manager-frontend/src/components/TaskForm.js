@@ -89,7 +89,7 @@ function TaskForm({ onTaskAdded }) {
   };
 
   return (
-    <div>
+    <div className={isEditing ? "tasklist" : ""}>
       <h2>{isEditing ? "タスクを編集" : "タスクを追加"}</h2>
       <form onSubmit={handleSave}>
         <input

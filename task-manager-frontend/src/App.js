@@ -26,19 +26,18 @@ function App() {
   return (
     <Router>
       <div className="app-container">
-      {isLoggedIn && <LogoutButton onLogout={handleLogout} />}
 
       <Routes>
       <Route
-        path="/"
-        element={
-          isLoggedIn ? (
-            <TaskList />
-          ) : (
-            <Navigate to="/auth" />
-          )
-        }
-      />
+  path="/"
+  element={
+    isLoggedIn ? (
+      <TaskList setIsLoggedIn={setIsLoggedIn} />
+    ) : (
+      <Navigate to="/auth" />
+    )
+  }
+/>
           
           <Route
             path="/auth"
@@ -69,15 +68,6 @@ function App() {
   );
 }
 
-// ログアウトボタンのコンポーネント
-const LogoutButton = ({ onLogout }) => {
-  const location = useLocation(); 
 
-  return (
-    location.pathname === "/" && (
-      <button onClick={onLogout} className="logout taskButton">ログアウト</button>
-    )
-  );
-};
 
 export default App;

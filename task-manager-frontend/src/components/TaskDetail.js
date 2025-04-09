@@ -53,7 +53,7 @@ function TaskDetail() {
 
   // タスクが見つかった場合の表示
   return (
-    <div>
+    <div  className="tasklist">
       <h1>タスク詳細</h1>
       {task ? (
         <>

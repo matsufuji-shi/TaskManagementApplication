@@ -4,26 +4,29 @@ import axiosInstance from "../api/axiosInstance";
 const getAuthToken = () => {
     return localStorage.getItem("token");
 };
-const token = getAuthToken();
+
 // タスク一覧を取得
-export const getTasks = async () => {
+export const getTasks = async (userId) => {
+    const token = getAuthToken();
     try {
-        // const token = getAuthToken();
-        const response = await axiosInstance.get("/tasks", {
-            headers: {
-                Authorization: token ? `Bearer ${token}` : "",
-            }
-        });
-        return response.data;
+      const response = await axiosInstance.get("/tasks", {
+        headers: {
+          Authorization: token ? `Bearer ${token}` : "",
+        },
+        params: {
+          userId: userId, // ユーザーIDをクエリパラメータとして渡す
+        }
+      });
+      return response.data;
     } catch (error) {
-        throw error;
+      throw error;
     }
-};
+  };
 
 // 新しいタスクを追加
 export const addTask = async (taskData) => {
+    const token = getAuthToken();
     try {
-        // const token = getAuthToken(); 
         const response = await axiosInstance.post("/tasks", taskData, {
             headers: {
                 Authorization: token ? `Bearer ${token}` : "",
