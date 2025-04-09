@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axiosInstance from "../api/axiosInstance";
 import { useNavigate } from "react-router-dom";
+import '../App.css';
 
 function AuthForm({ setIsLoggedIn }) {
   const [username, setUsername] = useState("");
@@ -54,32 +55,39 @@ function AuthForm({ setIsLoggedIn }) {
     }
 };
   return (
-    <div>
+    <div className="login">
+      <h1>タスク管理ページ</h1>
       <h2>ユーザー登録 / ログイン</h2>
       <form>
+      <div className="userPw">
         <div>
-          <label>ユーザー名:</label>
+          <label>ユーザー名</label>
+        </div>
           <input
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
+            className="loginInput"
           />
-        </div>
         <div>
-          <label>パスワード:</label>
+          <label>パスワード</label>
+        </div>
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            className="loginInput"
           />
-        </div>
+     </div>
         {error && <p style={{ color: "red" }}>{error}</p>}
-        <button onClick={(e) => handleSubmit(e, "register")} disabled={loading}>
+        <div className="loginbutton">
+        <button onClick={(e) => handleSubmit(e, "register")} disabled={loading} className="authbutton">
           {loading ? "登録中..." : "登録"}
         </button>
-        <button onClick={(e) => handleSubmit(e, "login")} disabled={loading}>
+        <button onClick={(e) => handleSubmit(e, "login")} disabled={loading} className="authbutton">
           {loading ? "ログイン中..." : "ログイン"}
         </button>
+        </div>
       </form>
     </div>
   );

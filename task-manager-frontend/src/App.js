@@ -4,6 +4,7 @@ import TaskList from "./components/TaskList";
 import TaskForm from "./components/TaskForm";
 import TaskDetail from "./components/TaskDetail";
 import AuthForm from "./components/AuthForm";
+import './App.css';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -24,23 +25,21 @@ function App() {
 
   return (
     <Router>
-      <div className="App">
-        <h1>タスク管理ページ</h1>
+      <div className="app-container">
+      {isLoggedIn && <LogoutButton onLogout={handleLogout} />}
 
-        <Routes>
-          <Route
-            path="/"
-            element={
-              isLoggedIn ? (
-                <>
-                  <TaskList />
-                  <LogoutButton onLogout={handleLogout} />
-                </>
-              ) : (
-                <Navigate to="/auth" />
-              )
-            }
-          />
+      <Routes>
+      <Route
+        path="/"
+        element={
+          isLoggedIn ? (
+            <TaskList />
+          ) : (
+            <Navigate to="/auth" />
+          )
+        }
+      />
+          
           <Route
             path="/auth"
             element={
@@ -51,6 +50,7 @@ function App() {
               )
             }
           />
+          
           <Route
             path="/add-task"
             element={isLoggedIn ? <TaskForm /> : <Navigate to="/auth" />}
@@ -75,7 +75,7 @@ const LogoutButton = ({ onLogout }) => {
 
   return (
     location.pathname === "/" && (
-      <button onClick={onLogout}>ログアウト</button>
+      <button onClick={onLogout} className="logout taskButton">ログアウト</button>
     )
   );
 };

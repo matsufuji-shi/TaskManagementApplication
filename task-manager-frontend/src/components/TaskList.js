@@ -23,6 +23,7 @@ const TaskList = () => {
 
   return (
     <div>
+      <h1>タスク管理ページ</h1>
       <h2>タスク一覧</h2>
 
       {tasks.map((task) => (

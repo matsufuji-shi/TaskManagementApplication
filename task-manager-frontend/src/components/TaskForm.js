@@ -67,6 +67,13 @@ function TaskForm({ onTaskAdded }) {
       } else {
         await addTask(formState);
         console.log("タスクが追加されました:", title);
+
+        setFormState({
+          title: "",
+          description: "",
+          dueDate: "",
+          status: "未完了",
+        });
         if (onTaskAdded) onTaskAdded();
       }
       navigate("/");
@@ -91,16 +98,18 @@ function TaskForm({ onTaskAdded }) {
           placeholder="タスクのタイトル"
           value={formState.title}
           onChange={handleChange}
+          className="taskInput"
         />
         <br />
-        <input
-          type="text"
+        <textarea
           name="description"
           placeholder="タスクの説明"
           value={formState.description}
           onChange={handleChange}
+          className="taskInput"
         />
         <br />
+        期限日：
         <input
           type="date"
           name="dueDate"
@@ -108,14 +117,15 @@ function TaskForm({ onTaskAdded }) {
           onChange={handleChange}
         />
         <br />
+        ステータス：
         <select name="status" value={formState.status} onChange={handleChange}>
           <option value="未完了">未完了</option>
           <option value="完了">完了</option>
         </select>
         <br />
-        <button type="submit">{isEditing ? "保存" : "追加"}</button>
+        <button type="submit" className="taskButton">{isEditing ? "保存" : "追加"}</button>
         {isEditing && (
-          <button type="button" onClick={handleCancel}>
+          <button type="button" onClick={handleCancel} className="taskButton">
             キャンセル
           </button>
         )}

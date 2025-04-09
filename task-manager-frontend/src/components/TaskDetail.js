@@ -61,8 +61,8 @@ function TaskDetail() {
           <p>{task.description}</p>
           <p><strong>期限日:</strong> {new Date(task.due_date).toLocaleDateString()}</p>  {/* 期限日を表示 */}
           <p><strong>ステータス:</strong> {task.status}</p>  {/* ステータスを表示 */}
-          <Link to={`/edit/${id}`}><button>編集</button></Link>
-          <button onClick={handleDelete}>削除</button>
+          <Link to={`/edit/${id}`}><button className="taskButton">編集</button></Link>
+          <button onClick={handleDelete} className="taskButton">削除</button>
         </>
       ) : (
         <p>タスクが存在しません。</p>
