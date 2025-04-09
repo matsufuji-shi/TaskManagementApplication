@@ -15,7 +15,7 @@ const getTasks = (req, res) => {
 
 // 新しいタスクを追加する
 const addTask = (req, res) => {
-    const { title, description, status, dueDate } = req.body; // dueDate を受け取る
+    const { title, description, status, dueDate } = req.body;
     const sqlInsert = "INSERT INTO tasks (title, description, status, due_date) VALUES (?, ?, ?, ?)";
     db.query(sqlInsert, [title, description, status, dueDate], (err, result) => {
         if (err) {
@@ -30,7 +30,7 @@ const addTask = (req, res) => {
 // 特定のタスクを更新する
 const updateTask = (req, res) => {
     const { id } = req.params;
-    const { title, description, status, dueDate } = req.body; // dueDate を受け取る
+    const { title, description, status, dueDate } = req.body;
     const sqlUpdate = "UPDATE tasks SET title = ?, description = ?, status = ?, due_date = ? WHERE id = ?";
     db.query(sqlUpdate, [title, description, status, dueDate, id], (err, result) => {
         if (err) {

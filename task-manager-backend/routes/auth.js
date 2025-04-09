@@ -4,8 +4,8 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const db = require("../config/database");
 
-// ↓ .env を使わないので直書きに変更
-const JWT_SECRET = "your_super_secret_key"; // ※セキュリティに注意！
+//秘密鍵
+const JWT_SECRET = "your_super_secret_key"; 
 
 // **ユーザー登録API**
 router.post("/register", async (req, res) => {

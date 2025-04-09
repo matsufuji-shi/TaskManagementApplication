@@ -8,16 +8,16 @@ const app = express();
 const userRoutes = require("./routes/auth");  // ユーザー認証ルート
 const tasksRouter = require("./routes/tasks"); // タスク管理ルート
 
-app.use(express.json());  // JSONのリクエストボディをパースする
+app.use(express.json());  
 app.use(cors()); 
 
-// ユーザー認証ルートを追加（※二重定義を避けて一箇所に統合）
+// ユーザー認証ルートを追加
 app.use("/api/auth", userRoutes);  
 
 // タスク管理用のAPIルートを追加
-app.use("/api/tasks", tasksRouter);  // /api/tasks にアクセスした際に tasksRouter を使用
+app.use("/api/tasks", tasksRouter); 
 
-// データベース接続確認
+
 db.getConnection((err, connection) => {
     if (err) {
         console.error("データベース接続エラー:", err);
@@ -28,7 +28,7 @@ db.getConnection((err, connection) => {
     }
 });
 
-// サーバを起動
+
 app.listen(3001, () => {
     console.log('Server running on port 3001');
 });

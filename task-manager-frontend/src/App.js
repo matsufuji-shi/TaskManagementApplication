@@ -4,11 +4,12 @@ import TaskList from "./components/TaskList";
 import TaskForm from "./components/TaskForm";
 import TaskDetail from "./components/TaskDetail";
 import AuthForm from "./components/AuthForm";
+import './App.css';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  // 初回レンダリング時にlocalStorageでログイン状態を確認
+  //ログイン状態を確認
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -24,24 +25,20 @@ function App() {
 
   return (
     <Router>
-      <div className="App">
-        <h1>タスク管理ページ</h1>
+      <div className="app-container">
 
-        {/* useLocation フックをRouter内で使用 */}
-        <Routes>
-          <Route
-            path="/"
-            element={
-              isLoggedIn ? (
-                <>
-                  <TaskList />
-                  <LogoutButton onLogout={handleLogout} />
-                </>
-              ) : (
-                <Navigate to="/auth" />
-              )
-            }
-          />
+      <Routes>
+      <Route
+  path="/"
+  element={
+    isLoggedIn ? (
+      <TaskList setIsLoggedIn={setIsLoggedIn} />
+    ) : (
+      <Navigate to="/auth" />
+    )
+  }
+/>
+          
           <Route
             path="/auth"
             element={
@@ -52,6 +49,7 @@ function App() {
               )
             }
           />
+          
           <Route
             path="/add-task"
             element={isLoggedIn ? <TaskForm /> : <Navigate to="/auth" />}
@@ -70,15 +68,6 @@ function App() {
   );
 }
 
-// ログアウトボタンのコンポーネント
-const LogoutButton = ({ onLogout }) => {
-  const location = useLocation(); // useLocationをここで使う
 
-  return (
-    location.pathname === "/" && (
-      <button onClick={onLogout}>ログアウト</button>
-    )
-  );
-};
 
 export default App;

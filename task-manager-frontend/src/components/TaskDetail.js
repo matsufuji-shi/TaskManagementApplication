@@ -3,27 +3,25 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import axiosInstance from "../api/axiosInstance";  // axiosインスタンスをインポート
 
 function TaskDetail() {
-  const { id } = useParams(); // URLのIDを取得
+  const { id } = useParams(); 
   const [task, setTask] = useState(null);
-  const [loading, setLoading] = useState(true);  // ローディング状態の管理
-  const [error, setError] = useState(null);  // エラー状態の管理
+  const [loading, setLoading] = useState(true);  
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   // タスクの取得
   useEffect(() => {
-    console.log("Task ID from useParams:", id);  // idをログに出力
 
     if (id) {
       const fetchTask = async () => {
         try {
           const response = await axiosInstance.get(`/tasks/${id}`);
-          console.log("API response:", response.data);
-          setTask(response.data); // タスク情報をstateに保存
-          setLoading(false);  // ロード完了
+          setTask(response.data);
+          setLoading(false);
         } catch (error) {
           console.error("タスクの取得に失敗しました", error);
           setError("タスクの取得に失敗しました");
-          setLoading(false);  // ロード完了
+          setLoading(false);  
         }
       };
       fetchTask();
@@ -55,7 +53,7 @@ function TaskDetail() {
 
   // タスクが見つかった場合の表示
   return (
-    <div>
+    <div  className="tasklist">
       <h1>タスク詳細</h1>
       {task ? (
         <>
@@ -63,8 +61,8 @@ function TaskDetail() {
           <p>{task.description}</p>
           <p><strong>期限日:</strong> {new Date(task.due_date).toLocaleDateString()}</p>  {/* 期限日を表示 */}
           <p><strong>ステータス:</strong> {task.status}</p>  {/* ステータスを表示 */}
-          <Link to={`/edit/${id}`}><button>編集</button></Link>
-          <button onClick={handleDelete}>削除</button>
+          <Link to={`/edit/${id}`}><button className="taskButton">編集</button></Link>
+          <button onClick={handleDelete} className="taskButton">削除</button>
         </>
       ) : (
         <p>タスクが存在しません。</p>

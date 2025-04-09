@@ -1,93 +1,66 @@
-/* 全体のスタイル */
-.App {
-  text-align: left;
-  width: 80%;
-  max-width: 800px;
-  margin: 40px auto;
-  font-family: Arial, sans-serif;
-  color: #333;
-  padding: 20px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-  background-color: #ffffff;
+/* ログイン画面 */
+.login{
+  place-items: center;
+  margin: 0 auto;
+  width: 50%;
+  border:  2px solid black;
+  border-radius: 25px;
+  background-color: #4c4b4b0f;
+}
+/*ユーザー名・PWの文字*/
+.userPw{
+  font-size: 13px;
 }
 
-/* フォームのスタイル */
-.textBox {
-  text-align: center;
-  margin-bottom: 20px;
+/*ログイン画面入力欄*/
+.loginInput{
+  font-size: 160%;
+  width: 100%;
+  height: 25px;
 }
 
-.textBox input {
-  width: 45%;
-  padding: 10px;
-  margin: 5px 2.5%;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 16px;
-}
-
-.textBox button {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 4px;
-  background-color: #007bff;
-  color: white;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.textBox button:hover {
-  background-color: #0056b3;
-}
-
-/* リストのスタイル */
-ul {
-  list-style-type: none;
-  padding-inline-start: 0;
-  margin: 0;
-}
-
-li {
-  margin: 5px 0;
-  padding: 10px;
-  background-color: #f8f9fa;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-}
-
-.user-info {
+/*ログイン画面ボタンを横並び*/
+.loginbutton{
   display: flex;
-  justify-content: flex-start; /* 左寄せに変更 */
-  align-items: center;
-  padding: 2px 0;
 }
 
-.user-info span:first-child {
+/*ログインボタン個々の設定*/
+.authbutton{
+  margin: 10px;
+  padding: 5px;
+  width: 50%;
+  background-color: orange;
   font-weight: bold;
-  margin-right: 10px; /* ラベルとテキストの間のスペースを減らす */
+  border-radius: 5px;
 }
 
-.user-info span:last-child {
-  flex-grow: 1;
-  text-align: right;
-  padding-left: 10px;
+.tasklist{
+  background-color: #c3c3c321;
+  border-radius: 8px;
+  padding: 10px;
 }
 
-/* メディアクエリを追加してレスポンシブ対応 */
-@media (max-width: 600px) {
-  .textBox input, .textBox button {
-    width: 100%;
-    margin: 5px 0;
-  }
+/*ログアウトボタン設定*/
+.logout{
+  position: absolute;
+  top: 35px;
+  right: 21px;
+}
 
-  .user-info {
-    flex-direction: column;
-    align-items: flex-start;
-  }
+/*タスク画面に表示されるボタンすべて*/
+.taskButton{
+  background-color: #276affd9;
+  color: #ffffff;
+  font-weight: bold;
+  border: 1px rgb(229, 226, 226) solid;
+  border-radius: 4px;
+  padding: 7px;
+  margin: 2px 2px 10px 10px;
+}
 
-  .user-info span:last-child {
-    text-align: left;
-  }
+/*タスク画面のinput*/
+.taskInput{
+  width: 260px;
+  padding: 5px 0px;
+  margin: 4px;
 }
